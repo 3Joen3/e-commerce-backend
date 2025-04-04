@@ -6,5 +6,5 @@ public class ProductOptionValue : BaseEntity
 {
     public required string Value { get; set; }
 
-    public int ProductOptionID { get; set; }
+    public Guid ProductOptionId { get; set; }
 }

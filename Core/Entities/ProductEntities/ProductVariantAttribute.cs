@@ -7,5 +7,5 @@ public class ProductVariantAttribute : BaseEntity
     public required string Title { get; set; }
     public required string Value { get; set; }
 
-    public int ProductVariantID { get; set; }
+    public Guid ProductVariantId { get; set; }
 }

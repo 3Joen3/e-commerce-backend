@@ -10,5 +10,5 @@ public class ProductVariant : BaseEntity
     public string ImageUrl { get; set; } = string.Empty;
     public required ICollection<ProductVariantAttribute> Attributes { get; set; }
 
-    public int ProductID { get; set; }
+    public Guid ProductId { get; set; }
 }

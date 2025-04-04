@@ -4,5 +4,5 @@ namespace Core.Entities.ProductEntities;
 
 public class ProductImage : ImageEntity
 {
-    public int ProductID { get; set; }
+    public Guid ProductId { get; set; }
 }

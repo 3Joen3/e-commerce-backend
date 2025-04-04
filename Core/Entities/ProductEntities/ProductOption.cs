@@ -7,5 +7,5 @@ public class ProductOption : BaseEntity
     public required string Title { get; set; }
     public required ICollection<ProductOptionValue> Values { get; set; } = [];
 
-    public int ProductID { get; set; }
+    public Guid ProductId { get; set; }
 }

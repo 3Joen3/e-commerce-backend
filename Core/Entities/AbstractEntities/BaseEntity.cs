@@ -2,5 +2,5 @@ namespace Core.Entities.AbstractEntities;
 
 public abstract class BaseEntity
 {
-    public int ID { get; set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
 }
