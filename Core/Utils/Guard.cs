@@ -4,12 +4,23 @@ public static class Guard
 {
     public static void AgainstNegative(decimal value, string parameterName)
     {
-        if (value < 0) throw new ArgumentException($"{UppercaseFirst(parameterName)} cannot be negative.");
+        if (value < 0) throw new ArgumentException($"Value cannot be negative. (Was {value})", parameterName);
     }
 
-    private static string UppercaseFirst(string input)
+    public static void AgainstEmptyCollection<T>(this ICollection<T>? collection, string parameterName)
     {
-        if (string.IsNullOrWhiteSpace(input)) return "";
-        return char.ToUpper(input[0]) + input[1..];
+        AgainstTooFewItems(collection, 1, parameterName);
+    }
+
+    public static void AgainstTooFewItems<T>(ICollection<T>? collection, int minCount, string parameterName)
+    {
+        if (collection == null || collection.Count < minCount)
+            throw new ArgumentException($"Collection must contain at least {minCount} item(s).", parameterName);
+    }
+
+    public static void AgainstNullOrWhiteSpace(string input, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            throw new ArgumentException($"Input cannot be null or white space.", parameterName);
     }
 }
