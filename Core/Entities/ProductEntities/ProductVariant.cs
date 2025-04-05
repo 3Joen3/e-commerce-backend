@@ -1,4 +1,5 @@
 using Core.Entities.AbstractEntities;
+using Core.Utils;
 
 namespace Core.Entities.ProductEntities;
 
@@ -15,7 +16,7 @@ public class ProductVariant : BaseEntity
 
     private ProductVariant(decimal price, decimal comparePrice, string imageUrl = "", ICollection<ProductVariantAttribute>? attributes = null)
     {
-        if (price < 0) throw new ArgumentException("Price cannot be negative.");
+        Guard.AgainstNegative(price, nameof(price));
 
         Price = price;
         ComparePrice = comparePrice;
