@@ -41,18 +41,10 @@ public class ProductVariant : BaseEntity
 
         var attributes = attributeSource.Select(attr =>
         {
-            Guard.AgainstNullOrWhiteSpace(attr.Title, nameof(attr.Title));
-            Guard.AgainstNullOrWhiteSpace(attr.Value, nameof(attr.Value));
+            var title = attr.Title.Trim();
+            if (!seenTitles.Add(attr.Title)) throw new ArgumentException($"Collection cannot contain duplicate values. (Value: {attr.Title})", nameof(attributeSource));
 
-            var trimmedTitle = attr.Title.Trim();
-
-            if (!seenTitles.Add(trimmedTitle)) throw new ArgumentException($"Collection cannot contain duplicate values. (Value: {trimmedTitle})", nameof(attributeSource));
-
-            return new ProductVariantAttribute
-            {
-                Title = trimmedTitle,
-                Value = attr.Value.Trim()
-            };
+            return new ProductVariantAttribute(attr.Title, attr.Value);
         });
 
         return new ProductVariant(price, comparePrice, [.. attributes], image);
