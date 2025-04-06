@@ -58,11 +58,11 @@ public class ProductVariantTests
     [Fact]
     public void CreateWithAttributes_WithValidData_ShouldSucceed()
     {
-        var productImage = new ProductImage()
-        {
-            Url = "Some image url.",
-            AltText = "Some image alt text."
-        };
+        var productImage = new ProductImage
+        (
+            url: "https://www.example.com/image",
+            altText: "Some image alt text."
+        );
 
         var variant = ProductVariant.CreateWithAttributes(ValidAttributeSource, ValidPrice, ComparePrice, productImage);
 
