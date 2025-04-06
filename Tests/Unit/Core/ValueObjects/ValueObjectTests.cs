@@ -1,6 +1,6 @@
 using Core.ValueObjects;
 
-namespace Tests.Unit.ValueObjects;
+namespace Tests.Unit.Core.ValueObjects;
 
 public class ValueObjectTests
 {

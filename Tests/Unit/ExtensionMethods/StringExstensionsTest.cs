@@ -1,6 +1,6 @@
 using Core.ExtensionMethods;
 
-namespace Tests.Unit;
+namespace Tests.Unit.ExtensionMethods;
 
 public class StringExstensionsTests
 {

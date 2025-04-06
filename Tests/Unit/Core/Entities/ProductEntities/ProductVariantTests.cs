@@ -115,11 +115,11 @@ public class ProductVariantTests
     }
 
     [Theory]
-    [InlineData(" ", "", "Title")]
-    [InlineData(" ", "Valid", "Title")]
-    [InlineData("", "Valid", "Title")]
-    [InlineData("Valid", " ", "Value")]
-    [InlineData("Valid", "", "Value")]
+    [InlineData(" ", "", "title")]
+    [InlineData(" ", "Valid", "title")]
+    [InlineData("", "Valid", "title")]
+    [InlineData("Valid", " ", "value")]
+    [InlineData("Valid", "", "value")]
     public void CreateWithAttributes_WithEmptyOrWhitespaceTitleOrValue_ShouldThrow(string title, string value, string expectedParamName)
     {
         var attributeSource = new List<TestAttributeInput>
