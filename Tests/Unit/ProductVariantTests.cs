@@ -130,7 +130,7 @@ public class ProductVariantTests
 
         var ex = AssertCreateWithAttributesThrows(attributeSource);
 
-        Assert.Equal($"Input cannot be null or white space. (Parameter '{expectedParamName}')", ex.Message);
+        Assert.Equal($"String cannot be null or white space. (Parameter '{expectedParamName}')", ex.Message);
     }
 
     private static ArgumentException AssertCreateWithAttributesThrows(ICollection<TestAttributeInput>? inputAttributeSource = null, decimal? inputPrice = null)

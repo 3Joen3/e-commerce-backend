@@ -7,6 +7,12 @@ public static class Guard
         if (value < 0) throw new ArgumentException($"Value cannot be negative. (Was {value})", parameterName);
     }
 
+    public static void AgainstNullOrWhiteSpace(string input, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            throw new ArgumentException($"String cannot be null or white space.", parameterName);
+    }
+
     public static void AgainstEmptyCollection<T>(this ICollection<T>? collection, string parameterName)
     {
         AgainstTooFewItems(collection, 1, parameterName);
@@ -16,11 +22,5 @@ public static class Guard
     {
         if (collection == null || collection.Count < minCount)
             throw new ArgumentException($"Collection must contain at least {minCount} item(s).", parameterName);
-    }
-
-    public static void AgainstNullOrWhiteSpace(string input, string parameterName)
-    {
-        if (string.IsNullOrWhiteSpace(input))
-            throw new ArgumentException($"Input cannot be null or white space.", parameterName);
     }
 }
