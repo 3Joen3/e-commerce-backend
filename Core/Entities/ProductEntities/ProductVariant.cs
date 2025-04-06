@@ -1,21 +1,22 @@
 using Core.Entities.AbstractEntities;
 using Core.Interfaces.Contracts;
 using Core.Utils;
+using Core.ValueObjects;
 
 namespace Core.Entities.ProductEntities;
 
 public class ProductVariant : BaseEntity
 {
-    public decimal Price { get; set; }
-    public decimal ComparePrice { get; set; }
+    public Price Price { get; set; }
+    public Price? ComparePrice { get; set; }
     public ICollection<ProductVariantAttribute> Attributes { get; set; } = [];
     public ProductImage? Image { get; set; }
 
     public Guid ProductId { get; set; }
 
-    private ProductVariant() { }
+    private ProductVariant() { Price = null!; }
 
-    private ProductVariant(decimal price, decimal comparePrice, ICollection<ProductVariantAttribute>? attributes = null, ProductImage? image = null)
+    private ProductVariant(Price price, Price? comparePrice = null, ICollection<ProductVariantAttribute>? attributes = null, ProductImage? image = null)
     {
         Price = price;
         ComparePrice = comparePrice;
@@ -23,16 +24,17 @@ public class ProductVariant : BaseEntity
         Attributes = attributes ?? [];
     }
 
-    public static ProductVariant CreateWithoutAttributes(decimal price, decimal comparePrice = 0)
+    public static ProductVariant CreateWithoutAttributes(decimal inputPrice, decimal inputComparePrice = 0)
     {
-        ValidateVariantInput(price);
+        var (price, comparePrice) = SetupPricing(inputPrice, inputComparePrice);
         return new ProductVariant(price, comparePrice);
     }
 
-    public static ProductVariant CreateWithAttributes<T>(ICollection<T> attributeSource, decimal price,
-    decimal comparePrice = 0, ProductImage? image = null) where T : IVariantAttributeCreate
+    public static ProductVariant CreateWithAttributes<T>(ICollection<T> attributeSource, decimal inputPrice,
+    decimal inputComparePrice = 0, ProductImage? image = null) where T : IVariantAttributeCreate
     {
-        ValidateVariantInput(price);
+        var (price, comparePrice) = SetupPricing(inputPrice, inputComparePrice);
+
         Guard.AgainstEmptyCollection(attributeSource, nameof(attributeSource));
 
         var seenTitles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -56,5 +58,11 @@ public class ProductVariant : BaseEntity
         return new ProductVariant(price, comparePrice, [.. attributes], image);
     }
 
-    private static void ValidateVariantInput(decimal price) => Guard.AgainstNegative(price, nameof(price));
+    private static (Price price, Price? comparePrice) SetupPricing(decimal inputPrice, decimal inputComparePrice)
+    {
+        var price = new Price(inputPrice);
+        var comparePrice = inputComparePrice > 0 ? new Price(inputComparePrice) : null;
+
+        return (price, comparePrice);
+    }
 }

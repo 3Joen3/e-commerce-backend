@@ -21,8 +21,8 @@ public class ProductVariantTests
     {
         var variant = ProductVariant.CreateWithoutAttributes(ValidPrice, ComparePrice);
 
-        Assert.Equal(ValidPrice, variant.Price);
-        Assert.Equal(ComparePrice, variant.ComparePrice);
+        Assert.Equal(ValidPrice, variant.Price.Amount);
+        Assert.Equal(ComparePrice, variant.ComparePrice?.Amount);
     }
 
     [Fact]
@@ -33,7 +33,17 @@ public class ProductVariantTests
             ProductVariant.CreateWithoutAttributes(NegativePrice);
         });
 
-        Assert.Equal($"Value cannot be negative. (Was {NegativePrice}) (Parameter 'price')", ex.Message);
+        Assert.Equal($"Price cannot be negative. (Parameter 'amount')", ex.Message);
+    }
+
+    [Fact]
+    public void CreateWithoutAttributes_WithZeroComparePrice_ShouldSetComparePriceToNull()
+    {
+        var variant = ProductVariant.CreateWithoutAttributes(ValidPrice, inputComparePrice: 0);
+
+        Assert.NotNull(variant.Price);
+        Assert.Equal(ValidPrice, variant.Price.Amount);
+        Assert.Null(variant.ComparePrice);
     }
 
     [Fact]
@@ -56,8 +66,8 @@ public class ProductVariantTests
 
         var variant = ProductVariant.CreateWithAttributes(ValidAttributeSource, ValidPrice, ComparePrice, productImage);
 
-        Assert.Equal(ValidPrice, variant.Price);
-        Assert.Equal(ComparePrice, variant.ComparePrice);
+        Assert.Equal(ValidPrice, variant.Price.Amount);
+        Assert.Equal(ComparePrice, variant.ComparePrice?.Amount);
         Assert.Equal(ValidAttributeSource.Count, variant.Attributes.Count);
         Assert.Equal(productImage.Url, variant.Image?.Url);
 
@@ -71,7 +81,17 @@ public class ProductVariantTests
     public void CreateWithAttributes_WithNegativePrice_ShouldThrow()
     {
         var ex = AssertCreateWithAttributesThrows(inputPrice: NegativePrice);
-        Assert.Equal($"Value cannot be negative. (Was {NegativePrice}) (Parameter 'price')", ex.Message);
+        Assert.Equal($"Price cannot be negative. (Parameter 'amount')", ex.Message);
+    }
+
+    [Fact]
+    public void CreateWithAttributes_WithZeroComparePrice_ShouldSetComparePriceToNull()
+    {
+        var variant = ProductVariant.CreateWithAttributes(ValidAttributeSource, ValidPrice, inputComparePrice: 0);
+
+        Assert.NotNull(variant.Price);
+        Assert.Equal(ValidPrice, variant.Price.Amount);
+        Assert.Null(variant.ComparePrice);
     }
 
     [Fact]
@@ -80,7 +100,6 @@ public class ProductVariantTests
         var ex = AssertCreateWithAttributesThrows(inputAttributeSource: []);
         Assert.Equal("Collection must contain at least 1 item(s). (Parameter 'attributeSource')", ex.Message);
     }
-
 
     [Fact]
     public void CreateWithAttributes_WithDuplicateAttributeSourceTitles_ShouldThrow()
