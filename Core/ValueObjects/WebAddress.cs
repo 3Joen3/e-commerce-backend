@@ -1,3 +1,4 @@
+using Core.Utils;
 
 namespace Core.ValueObjects;
 
@@ -7,7 +8,7 @@ public class WebAddress : ValueObject
 
     public WebAddress(string url)
     {
-        if (string.IsNullOrWhiteSpace(url)) throw new ArgumentException("URL cannot be empty.", nameof(url));
+        Guard.AgainstNullOrWhiteSpace(url, nameof(url));
 
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
             (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))

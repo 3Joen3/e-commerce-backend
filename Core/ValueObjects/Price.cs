@@ -1,4 +1,6 @@
 
+using Core.Utils;
+
 namespace Core.ValueObjects;
 
 public class Price : ValueObject
@@ -10,8 +12,7 @@ public class Price : ValueObject
 
     public Price(decimal amount)
     {
-        if (amount < 0) throw new ArgumentException("Price cannot be negative.", nameof(amount));
-
+        Guard.AgainstNegative(amount, nameof(amount));
         Money = new Money(amount);
     }
 
