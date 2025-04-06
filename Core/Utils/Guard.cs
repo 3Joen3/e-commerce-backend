@@ -4,7 +4,7 @@ public static class Guard
 {
     public static void AgainstNegative(decimal value, string parameterName)
     {
-        if (value < 0) throw new ArgumentException($"Value cannot be negative. (Was {value})", parameterName);
+        if (value < 0) throw new ArgumentException($"Decimal cannot be negative. (Was {value})", parameterName);
     }
 
     public static void AgainstNullOrWhiteSpace(string input, string parameterName)

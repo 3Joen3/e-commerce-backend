@@ -9,7 +9,7 @@ public class PriceTests
     {
         var amount = -99;
         var ex = Assert.Throws<ArgumentException>(() => new Price(amount));
-        Assert.Equal("Price cannot be negative. (Parameter 'amount')", ex.Message);
+        Assert.Equal($"Decimal cannot be negative. (Was {amount}) (Parameter 'amount')", ex.Message);
     }
 
     [Theory]

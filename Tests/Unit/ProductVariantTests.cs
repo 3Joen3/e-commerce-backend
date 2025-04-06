@@ -33,7 +33,7 @@ public class ProductVariantTests
             ProductVariant.CreateWithoutAttributes(NegativePrice);
         });
 
-        Assert.Equal($"Price cannot be negative. (Parameter 'amount')", ex.Message);
+        Assert.Equal($"Decimal cannot be negative. (Was {NegativePrice}) (Parameter 'amount')", ex.Message);
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class ProductVariantTests
     public void CreateWithAttributes_WithNegativePrice_ShouldThrow()
     {
         var ex = AssertCreateWithAttributesThrows(inputPrice: NegativePrice);
-        Assert.Equal($"Price cannot be negative. (Parameter 'amount')", ex.Message);
+        Assert.Equal($"Decimal cannot be negative. (Was {NegativePrice}) (Parameter 'amount')", ex.Message);
     }
 
     [Fact]

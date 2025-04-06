@@ -10,7 +10,7 @@ public class WebAddressTests
     public void CreatingWebAddress_WithEmptyOrWhitespace_ShouldThrow(string input)
     {
         var ex = Assert.Throws<ArgumentException>(() => new WebAddress(input));
-        Assert.Equal("URL cannot be empty. (Parameter 'url')", ex.Message);
+        Assert.Equal("String cannot be null or white space. (Parameter 'url')", ex.Message);
     }
 
     [Theory]
