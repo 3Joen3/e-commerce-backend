@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using Core.Entities.ProductEntities;
 using Core.Interfaces.Contracts;
 
-namespace Tests.Unit;
+namespace Tests.Unit.Core.Entities.ProductEntities;
 
 public class ProductVariantTests
 {

@@ -1,6 +1,6 @@
 using Core.Entities.ProductEntities;
 
-namespace Tests.Unit;
+namespace Tests.Unit.Core.Entities.ProductEntities;
 
 public class ProductImageTests
 {
