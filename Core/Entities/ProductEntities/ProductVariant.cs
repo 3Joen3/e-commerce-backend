@@ -7,14 +7,12 @@ namespace Core.Entities.ProductEntities;
 
 public class ProductVariant : BaseEntity
 {
-    public Price Price { get; set; }
-    public Price? ComparePrice { get; set; }
-    public ICollection<ProductVariantAttribute> Attributes { get; set; } = [];
-    public ProductImage? Image { get; set; }
+    public Price Price { get; private set; }
+    public Price? ComparePrice { get; private set; }
+    public ICollection<ProductVariantAttribute>? Attributes { get; private set; }
+    public ProductImage? Image { get; private set; }
 
-    public Guid ProductId { get; set; }
-
-    private ProductVariant() { Price = null!; }
+    public Guid ProductId { get; private set; }
 
     private ProductVariant(Price price, Price? comparePrice = null, ICollection<ProductVariantAttribute>? attributes = null, ProductImage? image = null)
     {
@@ -23,6 +21,8 @@ public class ProductVariant : BaseEntity
         Image = image;
         Attributes = attributes ?? [];
     }
+
+    private ProductVariant() { Price = null!; }
 
     public static ProductVariant CreateWithoutAttributes(decimal inputPrice, decimal inputComparePrice = 0)
     {

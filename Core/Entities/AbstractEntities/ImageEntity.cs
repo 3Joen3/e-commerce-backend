@@ -5,8 +5,8 @@ namespace Core.Entities.AbstractEntities;
 
 public abstract class ImageEntity : BaseEntity
 {
-    public WebAddress Url { get; set; }
-    public string AltText { get; set; } = string.Empty;
+    public WebAddress Url { get; private set; }
+    public string AltText { get; private set; }
 
     protected ImageEntity(string url, string altText)
     {
@@ -16,5 +16,5 @@ public abstract class ImageEntity : BaseEntity
         AltText = altText;
     }
 
-    protected ImageEntity() { Url = null!; }
+    protected ImageEntity() { Url = null!; AltText = null!; }
 }

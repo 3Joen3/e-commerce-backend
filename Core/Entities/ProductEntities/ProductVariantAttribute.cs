@@ -5,11 +5,10 @@ namespace Core.Entities.ProductEntities;
 
 public class ProductVariantAttribute : BaseEntity
 {
-    public string Title { get; private set; } = string.Empty;
-    public string Value { get; private set; } = string.Empty;
+    public string Title { get; private set; }
+    public string Value { get; private set; }
 
-
-    public Guid ProductVariantId { get; set; }
+    public Guid ProductVariantId { get; private set; }
 
     public ProductVariantAttribute(string title, string value)
     {
@@ -19,5 +18,6 @@ public class ProductVariantAttribute : BaseEntity
         Title = title.Trim();
         Value = value.Trim();
     }
-    private ProductVariantAttribute() { }
+
+    private ProductVariantAttribute() { Title = null!; Value = null!; }
 }
