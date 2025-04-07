@@ -9,7 +9,7 @@ public class ProductVariant : BaseEntity
 {
     public Price Price { get; private set; }
     public Price? ComparePrice { get; private set; }
-    public ICollection<ProductVariantAttribute>? Attributes { get; private set; }
+    public ICollection<ProductVariantAttribute> Attributes { get; private set; }
     public ProductImage? Image { get; private set; }
 
     public Guid ProductId { get; private set; }
@@ -22,7 +22,7 @@ public class ProductVariant : BaseEntity
         Attributes = attributes ?? [];
     }
 
-    private ProductVariant() { Price = null!; }
+    private ProductVariant() { Price = null!; Attributes = null!; }
 
     public static ProductVariant CreateWithoutAttributes(decimal inputPrice, decimal inputComparePrice = 0)
     {
