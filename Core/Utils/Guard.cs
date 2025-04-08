@@ -2,6 +2,11 @@ namespace Core.Utils;
 
 public static class Guard
 {
+    public static void AgainstLowerValue(decimal value, decimal comparedTo, string parameterName)
+    {
+        if (value <= comparedTo) throw new ArgumentException($"Decimal must be greater than {comparedTo}.", parameterName);
+    }
+
     public static void AgainstNegative(decimal value, string parameterName)
     {
         if (value < 0) throw new ArgumentException($"Decimal cannot be negative. (Was {value})", parameterName);

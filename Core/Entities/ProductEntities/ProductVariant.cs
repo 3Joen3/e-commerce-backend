@@ -24,14 +24,14 @@ public class ProductVariant : BaseEntity
 
     private ProductVariant() { Price = null!; Attributes = null!; }
 
-    public static ProductVariant CreateWithoutAttributes(decimal inputPrice, decimal inputComparePrice = 0)
+    public static ProductVariant CreateWithoutAttributes(decimal inputPrice, decimal? inputComparePrice = null)
     {
         var (price, comparePrice) = SetupPricing(inputPrice, inputComparePrice);
         return new ProductVariant(price, comparePrice);
     }
 
     public static ProductVariant CreateWithAttributes<T>(ICollection<T> attributeSource, decimal inputPrice,
-    decimal inputComparePrice = 0, ProductImage? image = null) where T : IVariantAttributeCreate
+    decimal? inputComparePrice = null, ProductImage? image = null) where T : IVariantAttributeCreate
     {
         var (price, comparePrice) = SetupPricing(inputPrice, inputComparePrice);
 
@@ -42,18 +42,20 @@ public class ProductVariant : BaseEntity
         var attributes = attributeSource.Select(attr =>
         {
             var title = attr.Title.Trim();
-            if (!seenTitles.Add(attr.Title)) throw new ArgumentException($"Collection cannot contain duplicate values. (Value: {attr.Title})", nameof(attributeSource));
+            if (!seenTitles.Add(title)) throw new ArgumentException($"Collection cannot contain duplicate values. (Value: {title})", nameof(attributeSource));
 
-            return new ProductVariantAttribute(attr.Title, attr.Value);
+            return new ProductVariantAttribute(title, attr.Value);
         });
 
         return new ProductVariant(price, comparePrice, [.. attributes], image);
     }
 
-    private static (Price price, Price? comparePrice) SetupPricing(decimal inputPrice, decimal inputComparePrice)
+    private static (Price price, Price? comparePrice) SetupPricing(decimal inputPrice, decimal? inputComparePrice)
     {
+        if (inputComparePrice.HasValue) Guard.AgainstLowerValue(inputComparePrice.Value, inputPrice, nameof(inputComparePrice));
+
         var price = new Price(inputPrice);
-        var comparePrice = inputComparePrice > 0 ? new Price(inputComparePrice) : null;
+        var comparePrice = inputComparePrice.HasValue ? new Price(inputComparePrice.Value) : null;
 
         return (price, comparePrice);
     }
