@@ -22,7 +22,7 @@ public class ProductImageTests
     public void CreateProductImage_WithInvalidUrl_ShouldThrow(string invalidUrl)
     {
         var ex = Assert.Throws<ArgumentException>(() => new ProductImage(invalidUrl, ValidAltText));
-        Assert.Equal($"Invalid URL: {url}. (Parameter 'url')", ex.Message);
+        Assert.Equal($"Invalid URL: {invalidUrl}. (Parameter 'url')", ex.Message);
     }
 
     [Theory]
