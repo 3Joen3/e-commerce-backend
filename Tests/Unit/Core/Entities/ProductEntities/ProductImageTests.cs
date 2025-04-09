@@ -19,27 +19,27 @@ public class ProductImageTests
     [Theory]
     [InlineData("Something random.")]
     [InlineData("Google.com")]
-    public void CreateProductImage_WithInvalidUrl_ShouldThrow(string url)
+    public void CreateProductImage_WithInvalidUrl_ShouldThrow(string invalidUrl)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new ProductImage(url, ValidAltText));
+        var ex = Assert.Throws<ArgumentException>(() => new ProductImage(invalidUrl, ValidAltText));
         Assert.Equal($"Invalid URL: {url}. (Parameter 'url')", ex.Message);
     }
 
     [Theory]
     [InlineData("")]
     [InlineData("    ")]
-    public void CreateProductImage_WithEmptyOrWhiteSpaceUrl_ShouldThrow(string url)
+    public void CreateProductImage_WithEmptyOrWhiteSpaceUrl_ShouldThrow(string emptyUrl)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new ProductImage(url, ValidAltText));
+        var ex = Assert.Throws<ArgumentException>(() => new ProductImage(emptyUrl, ValidAltText));
         Assert.Equal($"String cannot be null or white space. (Parameter 'url')", ex.Message);
     }
 
     [Theory]
     [InlineData("")]
     [InlineData("    ")]
-    public void CreateProductImage_WithEmptyOrWhiteSpaceAltText_ShouldThrow(string altText)
+    public void CreateProductImage_WithEmptyOrWhiteSpaceAltText_ShouldThrow(string emptyAltText)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new ProductImage(ValidUrl, altText));
+        var ex = Assert.Throws<ArgumentException>(() => new ProductImage(ValidUrl, emptyAltText));
         Assert.Equal($"String cannot be null or white space. (Parameter 'altText')", ex.Message);
     }
 }
