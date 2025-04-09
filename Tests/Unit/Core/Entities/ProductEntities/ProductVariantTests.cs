@@ -116,7 +116,7 @@ public class ProductVariantTests
         };
 
         var ex = AssertCreateWithAttributesThrows(inputAttributeSource: attributeSource);
-        Assert.Equal($"Collection cannot contain duplicate values. (Value: {attributeSource[0].Title}) (Parameter 'attributeSource')", ex.Message);
+        Assert.Equal($"Collection cannot contain duplicate Strings. (Value: {attributeSource[0].Title}) (Parameter 'attributeSource')", ex.Message);
     }
 
     [Theory]

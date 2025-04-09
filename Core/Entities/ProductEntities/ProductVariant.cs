@@ -36,16 +36,9 @@ public class ProductVariant : BaseEntity
         var (price, comparePrice) = SetupPricing(inputPrice, inputComparePrice);
 
         Guard.AgainstEmptyCollection(attributeSource, nameof(attributeSource));
+        Guard.AgainstDuplicateString(attributeSource.Select((a) => a.Title), nameof(attributeSource));
 
-        var seenTitles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        var attributes = attributeSource.Select(attr =>
-        {
-            var title = attr.Title.Trim();
-            if (!seenTitles.Add(title)) throw new ArgumentException($"Collection cannot contain duplicate values. (Value: {title})", nameof(attributeSource));
-
-            return new ProductVariantAttribute(title, attr.Value);
-        });
+        var attributes = attributeSource.Select(attr => new ProductVariantAttribute(attr.Title, attr.Value));
 
         return new ProductVariant(price, comparePrice, [.. attributes], image);
     }

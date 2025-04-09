@@ -2,6 +2,17 @@ namespace Core.Utils;
 
 public static class Guard
 {
+    public static void AgainstDuplicateString(IEnumerable<string> values, string parameterName)
+    {
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var value in values)
+        {
+            if (!seen.Add(value))
+                throw new ArgumentException($"Collection cannot contain duplicate Strings. (Value: {value})", parameterName);
+        }
+    }
+
     public static void AgainstLowerValue(decimal value, decimal comparedTo, string parameterName)
     {
         if (value <= comparedTo) throw new ArgumentException($"Decimal must be greater than {comparedTo}.", parameterName);
