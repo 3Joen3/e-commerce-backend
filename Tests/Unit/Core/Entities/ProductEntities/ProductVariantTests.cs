@@ -7,7 +7,6 @@ namespace Tests.Unit.Core.Entities.ProductEntities;
 public class ProductVariantTests
 {
     private static readonly decimal ValidPrice = 199;
-    private static readonly decimal NegativePrice = -99;
     private static readonly decimal ValidComparePrice = 349;
 
     private static readonly ICollection<TestAttributeInput> ValidAttributeSource =
@@ -28,12 +27,14 @@ public class ProductVariantTests
     [Fact]
     public void CreateWithoutAttributes_WithNegativePrice_ShouldThrow()
     {
+        var negativePrice = -99;
+
         var ex = Assert.Throws<ArgumentException>(() =>
         {
-            ProductVariant.CreateWithoutAttributes(NegativePrice);
+            ProductVariant.CreateWithoutAttributes(negativePrice);
         });
 
-        Assert.Equal($"Decimal cannot be negative. (Was {NegativePrice}) (Parameter 'amount')", ex.Message);
+        Assert.Equal($"Decimal cannot be negative. (Was {negativePrice}) (Parameter 'amount')", ex.Message);
     }
 
     [Theory]
@@ -83,8 +84,10 @@ public class ProductVariantTests
     [Fact]
     public void CreateWithAttributes_WithNegativePrice_ShouldThrow()
     {
-        var ex = AssertCreateWithAttributesThrows(inputPrice: NegativePrice);
-        Assert.Equal($"Decimal cannot be negative. (Was {NegativePrice}) (Parameter 'amount')", ex.Message);
+        var negativePrice = -99;
+
+        var ex = AssertCreateWithAttributesThrows(inputPrice: negativePrice);
+        Assert.Equal($"Decimal cannot be negative. (Was {negativePrice}) (Parameter 'amount')", ex.Message);
     }
 
     [Theory]
