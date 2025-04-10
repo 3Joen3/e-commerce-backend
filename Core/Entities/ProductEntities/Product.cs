@@ -1,19 +1,35 @@
 using Core.Entities.AbstractEntities;
 using Core.ExtensionMethods;
+using Core.Utils;
 
 namespace Core.Entities.ProductEntities;
 
 public class Product : BaseEntity
 {
-    private string _title = string.Empty;
-    public required string Title
+    public string Title { get; private set; }
+    public string Slug { get; private set; }
+    public ICollection<ProductVariant> Variants { get; private set; }
+    public string Description { get; private set; }
+    public ICollection<ProductImage> Images { get; private set; }
+    public ICollection<ProductOption> Options { get; private set; }
+
+    private Product(string title, ICollection<ProductVariant> variants, string description = "",
+        ICollection<ProductImage>? images = null, ICollection<ProductOption>? options = null)
     {
-        get => _title;
-        set { _title = value; Slug = value.Sluggify(); }
+        Title = title;
+        Slug = title.Sluggify();
+        Variants = variants;
+        Description = description;
+        Images = images ?? [];
+        Options = options ?? [];
     }
-    public string Slug { get; private set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public ICollection<ProductImage> Images { get; set; } = [];
-    public ICollection<ProductOption> Options { get; set; } = [];
-    public required ICollection<ProductVariant> Variants { get; set; }
+
+    public static Product Create(string title, ICollection<ProductVariant> variants, string description = "",
+        ICollection<ProductImage>? images = null, ICollection<ProductOption>? options = null)
+    {
+        Guard.AgainstNullOrWhiteSpace(title, nameof(title));
+        Guard.AgainstEmptyCollection(variants, nameof(variants));
+
+        return new Product(title, variants, description, images, options);
+    }
 }
