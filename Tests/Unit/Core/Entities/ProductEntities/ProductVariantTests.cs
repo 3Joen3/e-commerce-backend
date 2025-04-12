@@ -15,7 +15,7 @@ public class ProductVariantTests
     ];
 
     [Fact]
-    public void CreateWithoutAttributes_WithValidData_ShouldSucceed()
+    public void CreateWithoutAttributes_WithFullValidData_ShouldSucceed()
     {
         var variant = ProductVariant.CreateWithoutAttributes(ValidPrice, ValidComparePrice);
 
@@ -24,16 +24,10 @@ public class ProductVariantTests
     }
 
     [Fact]
-    public void CreateWithoutAttributes_WithNegativePrice_ShouldThrow()
+    public void CreateWithoutAttributes_WithRequiredValidData_ShouldSucceed()
     {
-        var negativePrice = -99;
-
-        var ex = Assert.Throws<ArgumentException>(() =>
-        {
-            ProductVariant.CreateWithoutAttributes(negativePrice);
-        });
-
-        Assert.Equal($"Decimal cannot be negative. (Was {negativePrice}) (Parameter 'amount')", ex.Message);
+        var variant = ProductVariant.CreateWithoutAttributes(ValidPrice);
+        Assert.Equal(ValidPrice, variant.Price.Amount);
     }
 
     [Theory]
@@ -41,9 +35,11 @@ public class ProductVariantTests
     [InlineData(0)]
     public void CreateWithoutAttributes_WithLowerOrEqualComparePrice_ShouldThrow(decimal subtract)
     {
+        var lowerOrEqualComparePrice = ValidPrice - subtract;
+
         var ex = Assert.Throws<ArgumentException>(() =>
         {
-            ProductVariant.CreateWithoutAttributes(ValidPrice, ValidPrice - subtract);
+            ProductVariant.CreateWithoutAttributes(ValidPrice, lowerOrEqualComparePrice);
         });
 
         Assert.Equal($"Decimal must be greater than {ValidPrice}. (Parameter 'inputComparePrice')", ex.Message);
@@ -59,7 +55,7 @@ public class ProductVariantTests
     }
 
     [Fact]
-    public void CreateWithAttributes_WithValidData_ShouldSucceed()
+    public void CreateWithAttributes_WithFullValidData_ShouldSucceed()
     {
         var productImage = new ProductImage
         (
@@ -81,12 +77,17 @@ public class ProductVariantTests
     }
 
     [Fact]
-    public void CreateWithAttributes_WithNegativePrice_ShouldThrow()
+    public void CreateWithAttributes_WithRequiredValidData_ShouldSucceed()
     {
-        var negativePrice = -99;
+        var variant = ProductVariant.CreateWithAttributes(ValidAttributeSource, ValidPrice);
 
-        var ex = AssertCreateWithAttributesThrows(inputPrice: negativePrice);
-        Assert.Equal($"Decimal cannot be negative. (Was {negativePrice}) (Parameter 'amount')", ex.Message);
+        Assert.Equal(ValidPrice, variant.Price.Amount);
+        Assert.Equal(ValidAttributeSource.Count, variant.Attributes.Count);
+
+        foreach (var attribute in ValidAttributeSource)
+        {
+            Assert.Contains(variant.Attributes, a => a.Title == attribute.Title && a.Value == attribute.Value);
+        }
     }
 
     [Theory]
@@ -94,7 +95,9 @@ public class ProductVariantTests
     [InlineData(0)]
     public void CreateWithAttributes_WithLowerOrEqualComparePrice_ShouldThrow(decimal subtract)
     {
-        var ex = AssertCreateWithAttributesThrows(inputComparePrice: ValidPrice - subtract);
+        var lowerOrEqualComparePrice = ValidPrice - subtract;
+
+        var ex = AssertCreateWithAttributesThrows(inputComparePrice: lowerOrEqualComparePrice);
         Assert.Equal($"Decimal must be greater than {ValidPrice}. (Parameter 'inputComparePrice')", ex.Message);
     }
 
@@ -118,6 +121,30 @@ public class ProductVariantTests
         Assert.Equal($"Collection cannot contain duplicate Strings. (Value: {attributeSource[0].Title}) (Parameter 'attributeSource')", ex.Message);
     }
 
+    //Child
+
+    [Fact]
+    public void CreateWithoutAttributes_WithNegativePrice_ShouldThrow()
+    {
+        var negativePrice = -99;
+
+        var ex = Assert.Throws<ArgumentException>(() =>
+        {
+            ProductVariant.CreateWithoutAttributes(negativePrice);
+        });
+
+        Assert.Equal($"Decimal cannot be negative. (Was {negativePrice}) (Parameter 'amount')", ex.Message);
+    }
+
+    [Fact]
+    public void CreateWithAttributes_WithNegativePrice_ShouldThrow()
+    {
+        var negativePrice = -99;
+
+        var ex = AssertCreateWithAttributesThrows(inputPrice: negativePrice);
+        Assert.Equal($"Decimal cannot be negative. (Was {negativePrice}) (Parameter 'amount')", ex.Message);
+    }
+
     [Theory]
     [InlineData(" ", "", "title")]
     [InlineData(" ", "Valid", "title")]
@@ -136,6 +163,7 @@ public class ProductVariantTests
 
         Assert.Equal($"String cannot be null or white space. (Parameter '{expectedParamName}')", ex.Message);
     }
+
 
     private static ArgumentException AssertCreateWithAttributesThrows(ICollection<TestAttributeInput>? inputAttributeSource = null, decimal? inputPrice = null, decimal? inputComparePrice = null)
     {
