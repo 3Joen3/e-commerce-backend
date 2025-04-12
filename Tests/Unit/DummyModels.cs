@@ -1,6 +1,6 @@
 using Core.Interfaces.Contracts;
 
-namespace Tests.Unit.Core.Entities.ProductEntities;
+namespace Tests.Unit;
 
 public class TestAttributeInput : IVariantAttributeCreate
 {
