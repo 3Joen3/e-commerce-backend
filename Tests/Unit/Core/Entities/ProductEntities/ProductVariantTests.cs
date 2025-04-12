@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using Core.Entities.ProductEntities;
-using Core.Interfaces.Contracts;
 
 namespace Tests.Unit.Core.Entities.ProductEntities;
 
@@ -149,10 +148,4 @@ public class ProductVariantTests
             ProductVariant.CreateWithAttributes(attributeSource, price, comparePrice);
         });
     }
-}
-
-public class TestAttributeInput : IVariantAttributeCreate
-{
-    public string Title { get; set; } = "";
-    public string Value { get; set; } = "";
 }

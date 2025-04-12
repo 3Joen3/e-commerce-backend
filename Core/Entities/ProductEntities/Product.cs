@@ -30,6 +30,30 @@ public class Product : BaseEntity
         Guard.AgainstNullOrWhiteSpace(title, nameof(title));
         Guard.AgainstEmptyCollection(variants, nameof(variants));
 
+        if (options != null && options.Count > 0)
+            EnsureAllVariantsMatchOptions(options, variants);
+
         return new Product(title, variants, description, images, options);
     }
+
+    private static void EnsureAllVariantsMatchOptions(ICollection<ProductOption> options, ICollection<ProductVariant> variants)
+    {
+        foreach (var variant in variants)
+        {
+            foreach (var option in options)
+            {
+                var attribute = FindVariantAttributeByOptionTitle(option.Title, variant.Attributes)
+                    ?? throw new ArgumentException($"Product variant is missing required attribute title: {option.Title}");
+
+                if (!IsAttributeValueAllowed(option.Values, attribute))
+                    throw new ArgumentException($"Product variant with attribute value '{attribute.Value}' does not match allowed values for option: {option.Title}");
+            }
+        }
+    }
+
+    private static ProductVariantAttribute? FindVariantAttributeByOptionTitle(string optionTitle, ICollection<ProductVariantAttribute> attributes)
+        => attributes.FirstOrDefault(attr => attr.Title.Equals(optionTitle, StringComparison.OrdinalIgnoreCase));
+
+    private static bool IsAttributeValueAllowed(ICollection<ProductOptionValue> optionValues, ProductVariantAttribute attribute)
+        => optionValues.Any(optValue => optValue.Value.Equals(attribute.Value, StringComparison.OrdinalIgnoreCase));
 }
