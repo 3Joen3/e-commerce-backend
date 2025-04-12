@@ -31,7 +31,7 @@ public class ProductVariantAttributeTests
     [Theory]
     [InlineData("")]
     [InlineData("  ")]
-    public void CreateProductVariantAttribute_WithWhiteSpaceTitle_ShouldThrow(string invalidTitle)
+    public void CreateProductVariantAttribute_WithEmptyOrWhiteSpaceTitle_ShouldThrow(string invalidTitle)
     {
         var ex = Assert.Throws<ArgumentException>(() => new ProductVariantAttribute(invalidTitle, ValidValue));
         Assert.Equal($"String cannot be null or white space. (Parameter 'title')", ex.Message);

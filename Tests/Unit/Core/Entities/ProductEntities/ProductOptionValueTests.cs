@@ -25,7 +25,7 @@ public class ProductOptionValueTests
     [Theory]
     [InlineData("")]
     [InlineData("  ")]
-    public void CreateProductOptionValue_WithWhiteSpaceTitle_ShouldThrow(string invalidValue)
+    public void CreateProductOptionValue_WithEmptyOrWhiteSpaceTitle_ShouldThrow(string invalidValue)
     {
         var ex = Assert.Throws<ArgumentException>(() => new ProductOptionValue(invalidValue));
         Assert.Equal($"String cannot be null or white space. (Parameter 'value')", ex.Message);
