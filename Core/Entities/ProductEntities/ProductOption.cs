@@ -26,6 +26,8 @@ public class ProductOption : BaseEntity
 
         var optionValues = values.Select(value => new ProductOptionValue(value));
 
-        return new ProductOption(title, [.. optionValues]);
+        var trimmed = title.Trim();
+
+        return new ProductOption(trimmed, [.. optionValues]);
     }
 }
