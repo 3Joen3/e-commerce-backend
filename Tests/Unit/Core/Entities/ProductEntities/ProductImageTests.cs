@@ -7,6 +7,8 @@ public class ProductImageTests
     private static readonly string ValidUrl = "https://www.example.com/image";
     private static readonly string ValidAltText = "Cool red T-shirt";
 
+    //Child
+
     [Fact]
     public void CreateProductImage_WithUrlAndAltText_ShouldSucceed()
     {
