@@ -8,6 +8,24 @@ public class ProductOptionTests
     private static readonly string ValidTitle = "Size";
     private static readonly ICollection<string> ValidValues = ["S", "M", "L"];
 
+    [Fact]
+    public void CreateProductOption_WithFullValidData_ShouldSucceed()
+    {
+        var productOption = ProductOption.Create(ValidTitle, ValidValues);
+
+        Assert.Equal(ValidTitle, productOption.Title);
+        Assert.Equal(ValidValues, productOption.Values.Select(v => v.Value));
+    }
+
+    [Fact]
+    public void CreateProductOption_WithUntrimmedTitle_ShouldTrim()
+    {
+        var untrimmedTitle = "    Size    ";
+        var productOption = ProductOption.Create(untrimmedTitle, ValidValues);
+
+        Assert.Equal(ValidTitle, productOption.Title);
+    }
+
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
@@ -17,16 +35,12 @@ public class ProductOptionTests
         Assert.Equal($"String cannot be null or white space. (Parameter 'title')", ex.Message);
     }
 
-    [Theory]
-    [InlineData("", "S", "L")]
-    [InlineData(" ", "M", "XL")]
-    [InlineData("  ", "XS", "XXL")]
-    public void CreateProductOption_WithEmptyOrWhiteSpaceValues_ShouldThrow(string invalidValue, string valid1, string valid2)
+    [Fact]
+    public void CreateProductOption_WithEmptyValuesCollection_ShouldThrow()
     {
-        var invalidValues = new List<string> { invalidValue, valid1, valid2 };
-
-        var ex = AssertCreateThrows(inputValues: invalidValues);
-        Assert.Equal("String cannot be null or white space. (Parameter 'value')", ex.Message);
+        var emptyValuesCollection = new Collection<string>() { };
+        var ex = AssertCreateThrows(inputValues: emptyValuesCollection);
+        Assert.Equal("Collection must contain at least 1 item(s). (Parameter 'values')", ex.Message);
     }
 
     [Fact]
@@ -38,13 +52,17 @@ public class ProductOptionTests
         Assert.Equal($"Collection cannot contain duplicate Strings. (Value: {duplicateValues[0]}) (Parameter 'values')", ex.Message);
     }
 
-    [Fact]
-    public void CreateProductOption_WithValidData_ShouldSucceed()
-    {
-        var productOption = ProductOption.Create(ValidTitle, ValidValues);
+    //Child
 
-        Assert.Equal(ValidTitle, productOption.Title);
-        Assert.Equal(ValidValues, productOption.Values.Select(v => v.Value));
+    [Theory]
+    [InlineData("", "S", "L")]
+    [InlineData(" ", "M", "XL")]
+    public void CreateProductOption_WithEmptyOrWhiteSpaceValues_ShouldThrow(string invalidValue, string valid1, string valid2)
+    {
+        var invalidValues = new List<string> { invalidValue, valid1, valid2 };
+
+        var ex = AssertCreateThrows(inputValues: invalidValues);
+        Assert.Equal("String cannot be null or white space. (Parameter 'value')", ex.Message);
     }
 
     private static ArgumentException AssertCreateThrows(string? inputTitle = null, ICollection<string>? inputValues = null)
