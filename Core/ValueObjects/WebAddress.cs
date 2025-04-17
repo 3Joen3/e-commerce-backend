@@ -19,6 +19,8 @@ public class WebAddress : ValueObject
         Url = url;
     }
 
+    private WebAddress() { Url = null!; }
+
     public override string ToString() => Url;
 
     protected override IEnumerable<object?> GetEqualityComponents()

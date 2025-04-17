@@ -24,6 +24,8 @@ public class Product : BaseEntity
         Options = options ?? [];
     }
 
+    private Product() { Title = null!; Slug = null!; Variants = null!; Description = null!; Images = null!; Options = null!; }
+
     public static Product Create(string title, ICollection<ProductVariant> variants, string description = "",
         ICollection<ProductImage>? images = null, ICollection<ProductOption>? options = null)
     {
