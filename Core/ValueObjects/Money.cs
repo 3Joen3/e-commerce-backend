@@ -2,9 +2,9 @@ using System.Globalization;
 
 namespace Core.ValueObjects;
 
-public class Money(decimal amount) : ValueObject
+public class Money : ValueObject
 {
-    public decimal Amount { get; } = amount;
+    public decimal Amount { get; }
     public string Currency { get; } = "SEK";
 
     protected override IEnumerable<object?> GetEqualityComponents()
@@ -12,6 +12,10 @@ public class Money(decimal amount) : ValueObject
         yield return Amount;
         yield return Currency;
     }
+
+    public Money(decimal amount) => Amount = amount;
+
+    private Money() { }
 
     public override string ToString()
     {
