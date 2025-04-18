@@ -7,14 +7,14 @@ namespace Core.Entities.ProductEntities;
 
 public class ProductVariant : BaseEntity
 {
-    public Price Price { get; private set; }
-    public Price? ComparePrice { get; private set; }
+    public ProductPrice Price { get; private set; }
+    public ProductPrice? ComparePrice { get; private set; }
     public ICollection<ProductVariantAttribute> Attributes { get; private set; }
     public ProductImage? Image { get; private set; }
 
     public Guid ProductId { get; private set; }
 
-    private ProductVariant(Price price, Price? comparePrice = null, ICollection<ProductVariantAttribute>? attributes = null, ProductImage? image = null)
+    private ProductVariant(ProductPrice price, ProductPrice? comparePrice = null, ICollection<ProductVariantAttribute>? attributes = null, ProductImage? image = null)
     {
         Price = price;
         ComparePrice = comparePrice;
@@ -43,12 +43,12 @@ public class ProductVariant : BaseEntity
         return new ProductVariant(price, comparePrice, [.. attributes], image);
     }
 
-    private static (Price price, Price? comparePrice) SetupPricing(decimal inputPrice, decimal? inputComparePrice)
+    private static (ProductPrice price, ProductPrice? comparePrice) SetupPricing(decimal inputPrice, decimal? inputComparePrice)
     {
         if (inputComparePrice.HasValue) Guard.AgainstLowerValue(inputComparePrice.Value, inputPrice, nameof(inputComparePrice));
 
-        var price = new Price(inputPrice);
-        var comparePrice = inputComparePrice.HasValue ? new Price(inputComparePrice.Value) : null;
+        var price = new ProductPrice(inputPrice, Currency.SEK);
+        var comparePrice = inputComparePrice.HasValue ? new ProductPrice(inputComparePrice.Value, Currency.SEK) : null;
 
         return (price, comparePrice);
     }
