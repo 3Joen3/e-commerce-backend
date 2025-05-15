@@ -15,7 +15,7 @@ namespace Infrastructure.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
 
             modelBuilder.Entity("Core.Entities.ProductEntities.Product", b =>
                 {
@@ -267,7 +267,6 @@ namespace Infrastructure.Data.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Code")
-                                .IsRequired()
                                 .HasColumnType("TEXT")
                                 .HasColumnName("Currency");
 

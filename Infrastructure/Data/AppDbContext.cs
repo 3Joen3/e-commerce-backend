@@ -50,7 +50,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             {
                 c.Property(x => x.Code)
                 .HasColumnName("Currency")
-                .IsRequired();
+                .IsRequired(false); //FIX
             });
 
             builder.Property(p => p.Amount).IsRequired();

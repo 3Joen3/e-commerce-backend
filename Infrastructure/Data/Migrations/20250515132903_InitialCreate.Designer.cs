@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250418184037_InitialCreate")]
+    [Migration("20250515132903_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
 
             modelBuilder.Entity("Core.Entities.ProductEntities.Product", b =>
                 {
@@ -270,7 +270,6 @@ namespace Infrastructure.Data.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Code")
-                                .IsRequired()
                                 .HasColumnType("TEXT")
                                 .HasColumnName("Currency");
 
