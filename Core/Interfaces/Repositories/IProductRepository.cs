@@ -1,0 +1,8 @@
+using Core.Entities.ProductEntities;
+
+namespace Core.Interfaces.Repositories;
+
+public interface IProductRepository
+{
+    Task<Product?> GetByIdAsync(Guid id);
+}
