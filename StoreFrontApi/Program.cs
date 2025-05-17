@@ -28,3 +28,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+namespace StoreFrontApi
+{
+    public partial class Program() { }
+}

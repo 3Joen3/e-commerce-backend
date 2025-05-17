@@ -27,3 +27,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+namespace AdminApi
+{
+    public partial class Program { }
+}
