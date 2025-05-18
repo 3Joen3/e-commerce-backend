@@ -8,7 +8,7 @@ public class CreateProductRequest
     public string Title { get; set; } = string.Empty;
 
     [Required, MinLength(1)]
-    public IEnumerable<ProductVariantRequest> Variants { get; set; } = [];
+    public IEnumerable<ProductVariantRequest> Variants { get; set; } = null!;
 
     public string Description { get; set; } = string.Empty;
     public IEnumerable<IFormFile> Media { get; set; } = [];
