@@ -1,3 +1,5 @@
+using AdminApi.Requests;
+using AdminApi.Responses;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,21 @@ public class ProductsController(IProductService productService) : ControllerBase
 {
     private readonly IProductService _productService = productService;
 
+    [HttpPost]
+    public async Task<IActionResult> Create([FromForm] CreateProductRequest request)
+    {
+        var createModel = request.ToProductCreateModel();
+
+        var result = await _productService.CreateProductAsync(createModel);
+
+        //FIX ALL THIS WHEN U KNOW HOW TO HANDLE BETTER
+        if (!result.Success) return BadRequest();
+
+        var product = result.Value;
+
+        return CreatedAtAction(nameof(Get), new { id = product?.Id }, product);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
@@ -16,6 +33,6 @@ public class ProductsController(IProductService productService) : ControllerBase
 
         if (product == null) return NotFound();
 
-        return Ok(ProductMapper.MapProduct(product));
+        return Ok(product.ToProductResponse());
     }
 }

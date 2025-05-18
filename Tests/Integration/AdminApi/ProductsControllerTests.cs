@@ -1,6 +1,7 @@
 using System.Net;
+using System.Net.Http.Json;
+using AdminApi.Requests;
 using AdminApi.Responses;
-using Core.Entities.ProductEntities;
 using Tests.Integration.AdminApi.Utils;
 using Tests.Integration.Shared;
 
@@ -8,6 +9,27 @@ namespace Tests.Integration.AdminApi;
 
 public class ProductsControllerTests
 {
+    private const string BaseEndpoint = "/products";
+
+    //FIX
+    [Fact]
+    public async Task CreateProduct_WithValidData_ShouldSucceed()
+    {
+        var request = new CreateProductRequest
+        {
+            Title = "Red T-Shirt",
+            Variants = [new ProductVariantRequest { Price = 299, ComparePrice = 399 }],
+        };
+
+        var client = AdminApiTestHelper.GetClient();
+
+        var response = await client.PostAsJsonAsync(BaseEndpoint, request);
+
+        var lol = "LOL";
+
+        Assert.Equal("LOL", lol);
+    }
+
     [Fact]
     public async Task GetProductById_NonExistentId_ReturnsNotFound()
     {
@@ -15,7 +37,7 @@ public class ProductsControllerTests
 
         var client = AdminApiTestHelper.GetClient();
 
-        var response = await client.GetAsync($"/products/{randomId}");
+        var response = await client.GetAsync($"{BaseEndpoint}/{randomId}");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
