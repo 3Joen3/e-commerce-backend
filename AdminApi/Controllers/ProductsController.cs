@@ -35,4 +35,14 @@ public class ProductsController(IProductService productService) : ControllerBase
 
         return Ok(product.ToProductResponse());
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var products = await _productService.GetAllAsync();
+
+        var response = products.Select((product) => product.ToProductResponse());
+
+        return Ok(response);
+    }
 }

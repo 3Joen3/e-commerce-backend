@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using AdminApi.Requests;
 using AdminApi.Responses;
+using Core.Entities.ProductEntities;
 using Tests.Integration.AdminApi.Utils;
 using Tests.Integration.Shared;
 
@@ -28,6 +29,33 @@ public class ProductsControllerTests
         var lol = "LOL";
 
         Assert.Equal("LOL", lol);
+    }
+
+    [Fact]
+    public async Task GetAllProducts_ProductsInDb_ReturnsProducts()
+    {
+        var products = new List<Product>()
+        {
+            IntegrationTestHelper.GetProduct(),
+            IntegrationTestHelper.GetProduct(),
+        };
+
+        var factory = AdminApiTestHelper.GetFactory();
+
+        factory.SeedDb((db) =>
+        {
+            db.AddRange(products);
+        });
+
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync($"{BaseEndpoint}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var responseProducts = await IntegrationTestHelper.DeserializeApiResponse<List<ProductResponse>>(response);
+
+        Assert.Equal(2, responseProducts?.Count);
     }
 
     [Fact]

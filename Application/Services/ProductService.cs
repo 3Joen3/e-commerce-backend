@@ -64,4 +64,6 @@ public class ProductService(IProductRepository productRepository, IFileUploader 
     }
 
     public async Task<Product?> GetByIdAsync(Guid id) => await _productRepository.GetByIdAsync(id);
+
+    public async Task<IEnumerable<Product>> GetAllAsync() => await _productRepository.GetAllAsync();
 }
