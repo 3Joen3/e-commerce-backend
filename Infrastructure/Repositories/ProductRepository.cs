@@ -8,5 +8,13 @@ public class ProductRepository(AppDbContext context) : IProductRepository
 {
     private readonly AppDbContext _context = context;
 
+    public async Task<Product> AddAsync(Product product)
+    {
+        await _context.Products.AddAsync(product);
+        await _context.SaveChangesAsync();
+
+        return  product;
+    }
+
     public async Task<Product?> GetByIdAsync(Guid id) => await _context.Products.FindAsync(id);
 }                                                                                                                                                                   
